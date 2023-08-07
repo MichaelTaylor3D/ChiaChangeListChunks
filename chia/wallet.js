@@ -51,7 +51,7 @@ const getBaseOptions = (config) => {
 
 const walletIsSynced = async (config) => {
   try {
-    const { cert, key, timeout } = getBaseOptions();
+    const { cert, key, timeout } = getBaseOptions(config);
 
     const response = await superagent
       .post(`${config.wallet_host}/get_sync_status`)
@@ -79,7 +79,7 @@ const walletIsAvailable = async (config) => {
 
 const getWalletBalance = async (config, options) => {
   try {
-    const { cert, key, timeout } = getBaseOptions();
+    const { cert, key, timeout } = getBaseOptions(config);
 
     const response = await superagent
       .post(`${config.wallet_host}/get_wallet_balance`)
@@ -115,7 +115,7 @@ const waitForAllTransactionsToConfirm = async (config) => {
 };
 
 const hasUnconfirmedTransactions = async (config, options) => {
-  const { cert, key, timeout } = getBaseOptions();
+  const { cert, key, timeout } = getBaseOptions(config);
 
   const response = await superagent
     .post(`${config.wallet_host}/get_transactions`)
@@ -146,7 +146,7 @@ const hasUnconfirmedTransactions = async (config, options) => {
 };
 
 const getPublicAddress = async (config, options) => {
-  const { cert, key, timeout } = getBaseOptions();
+  const { cert, key, timeout } = getBaseOptions(config);
 
   const response = await superagent
     .post(`${config.wallet_host}/get_next_address`)
@@ -169,7 +169,7 @@ const getPublicAddress = async (config, options) => {
 };
 
 const getActiveNetwork = async (config) => {
-  const { cert, key, timeout } = getBaseOptions();
+  const { cert, key, timeout } = getBaseOptions(config);
   const url = `${config.wallet_host}/get_network_info`;
 
   try {
