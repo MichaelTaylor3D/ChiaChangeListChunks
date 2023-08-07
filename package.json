@@ -1,6 +1,6 @@
 {
   "name": "chia-changelist-chunks",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Auto chunks your Chia DataLayer changelist if it exceeds RPC size limitations",
   "main": "index.js",
   "scripts": {

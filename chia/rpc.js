@@ -58,8 +58,8 @@ const callAndAwaitBlockchainRPC = async (url, params, config, maxAttempts = 10) 
   const { cert, key } = wallet.getBaseOptions(config);
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    await wallet.walletIsSynced();
-    await wallet.waitForAllTransactionsToConfirm();
+    await wallet.walletIsSynced(config);
+    await wallet.waitForAllTransactionsToConfirm(config);
 
     const feeEstimate = await getFeeEstimate();
     const body = {
@@ -98,9 +98,6 @@ const callAndAwaitBlockchainRPC = async (url, params, config, maxAttempts = 10) 
           `FAILED: Calling Chia RPC: ${url} ${JSON.stringify(response.body)}}}`
         );
       }
-
-      await wallet.walletIsSynced();
-      await wallet.waitForAllTransactionsToConfirm();
 
       return response.body;
     } catch (error) {
