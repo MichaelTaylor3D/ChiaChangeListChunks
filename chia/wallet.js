@@ -1,6 +1,5 @@
 const superagent = require("superagent");
 const https = require("https");
-const { getBaseOptions } = require("../utils/api-utils");
 
 const getBaseOptions = (config) => {
   let cert, key;
