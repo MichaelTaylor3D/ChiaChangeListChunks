@@ -4,7 +4,7 @@ const https = require("https");
 
 const getFeeEstimate = async (config) => {
   try {
-    const { cert, key } = getBaseOptions(config);
+    const { cert, key } = wallet.getBaseOptions(config);
 
     if (!config.full_node_host) {
       return config.default_fee;
@@ -51,7 +51,7 @@ const getFeeEstimate = async (config) => {
 };
 
 const callAndAwaitBlockchainRPC = async (url, params, config, maxAttempts = 10) => {
-  const { cert, key } = getBaseOptions(config);
+  const { cert, key } = wallet.getBaseOptions(config);
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     await wallet.walletIsSynced();
