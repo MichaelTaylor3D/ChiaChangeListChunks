@@ -61,7 +61,7 @@ const callAndAwaitBlockchainRPC = async (url, params, config, maxAttempts = 10) 
     await wallet.walletIsSynced(config);
     await wallet.waitForAllTransactionsToConfirm(config);
 
-    const feeEstimate = await getFeeEstimate();
+    const feeEstimate = await getFeeEstimate(config);
     const body = {
       ...params,
       fee: feeEstimate || 300000000,
