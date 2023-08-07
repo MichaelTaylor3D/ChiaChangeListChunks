@@ -6,8 +6,6 @@ let config = {
   wallet_host: "https://localhost:9256",
   certificate_folder_path: "~/.chia/mainnet/config/ssl",
   default_wallet_id: 1,
-  default_fee: 3000000,
-  default_mirror_coin_amount: 300000000,
   maximum_rpc_payload_size: 26214400,
 };
 

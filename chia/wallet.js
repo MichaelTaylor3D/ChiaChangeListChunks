@@ -77,32 +77,6 @@ const walletIsAvailable = async (config) => {
   return await walletIsSynced(config);
 };
 
-const getWalletBalance = async (config, options) => {
-  try {
-    const { cert, key, timeout } = getBaseOptions(config);
-
-    const response = await superagent
-      .post(`${config.wallet_host}/get_wallet_balance`)
-      .send({
-        wallet_id: options?.walletId || config.default_wallet_id,
-      })
-      .key(key)
-      .cert(cert)
-      .timeout(timeout)
-      .agent(new https.Agent({ rejectUnauthorized: false }));
-
-    if (response.text) {
-      const data = JSON.parse(response.text);
-      const balance = data?.wallet_balance?.spendable_balance;
-      return balance / 1000000000000;
-    }
-
-    return false;
-  } catch (error) {
-    return false;
-  }
-};
-
 const waitForAllTransactionsToConfirm = async (config) => {
   const unconfirmedTransactions = await hasUnconfirmedTransactions(config);
   
@@ -145,61 +119,12 @@ const hasUnconfirmedTransactions = async (config, options) => {
   return false;
 };
 
-const getPublicAddress = async (config, options) => {
-  const { cert, key, timeout } = getBaseOptions(config);
 
-  const response = await superagent
-    .post(`${config.wallet_host}/get_next_address`)
-    .send({
-      wallet_id: options?.walletId || config.default_wallet_id,
-      new_address: options?.newAddress,
-    })
-    .key(key)
-    .cert(cert)
-    .timeout(timeout)
-    .agent(new https.Agent({ rejectUnauthorized: false }));
-
-  const data = JSON.parse(response.text);
-
-  if (data.success) {
-    return data.address;
-  }
-
-  return false;
-};
-
-const getActiveNetwork = async (config) => {
-  const { cert, key, timeout } = getBaseOptions(config);
-  const url = `${config.wallet_host}/get_network_info`;
-
-  try {
-    const response = await superagent
-      .post(url)
-      .key(key)
-      .cert(cert)
-      .timeout(timeout)
-      .send(JSON.stringify({}))
-      .agent(new https.Agent({ rejectUnauthorized: false }));
-
-    const data = response.body;
-
-    if (data.success) {
-      return data;
-    }
-
-    return false;
-  } catch (error) {
-    return false;
-  }
-};
 
 module.exports = {
   getBaseOptions,
   hasUnconfirmedTransactions,
   walletIsSynced,
   walletIsAvailable,
-  getPublicAddress,
-  getWalletBalance,
-  waitForAllTransactionsToConfirm,
-  getActiveNetwork,
+  waitForAllTransactionsToConfirm
 };
