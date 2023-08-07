@@ -189,6 +189,7 @@ const getActiveNetwork = async (config) => {
 };
 
 module.exports = {
+  getBaseOptions,
   hasUnconfirmedTransactions,
   walletIsSynced,
   walletIsAvailable,
