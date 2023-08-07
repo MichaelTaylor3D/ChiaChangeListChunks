@@ -77,6 +77,36 @@ changeListChunker.configure({
 
 Please note that the above is a simplified API documentation. For advanced usage and more details, please refer to the source code.
 
+## handling oversized changes
+In some cases, a single insert in the changelist might exceed RPC size limitation. Even if we create a changelist that holds just that key/value, it 
+will still be rejected by the datalayer RPC. In this case, the tool will break up the value into a series of multipart key/value pairs.
+
+Example:
+file.mp4.part1
+file.mp4.part2
+...
+file.mp4.part3
+
+Whereas each multipart is in its own changelist that is under the size constraints.
+
+Finally a final key will be added to the datalayer that is named as the original key:
+
+Example: file.mp4
+
+The value of this key is a JSON object in the following format
+```
+{
+  type: "multipart",
+  parts: [
+    "file.mp4.part1",
+    "file.mp4.part2"
+    ...
+    "file.mp4.part3"
+  ]
+}
+```
+When this key is consumed by an application, when you receive a value in this format, you can request each key and sticj their values together to reconstruct the original file.
+
 ## Contributions
 
 Contributions to the project are welcome. Feel free to open issues or submit pull requests.
