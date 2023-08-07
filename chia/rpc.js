@@ -1,5 +1,6 @@
 const superagent = require("superagent");
 const wallet = require("./wallet");
+const https = require("https");
 
 const getFeeEstimate = async (config) => {
   try {
