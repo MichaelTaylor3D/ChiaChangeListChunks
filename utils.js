@@ -13,28 +13,8 @@ const decodeDataLayerResponse = (data) => {
   }));
 };
 
-const keyValueToChangeList = (key, value, options) => {
-  const changeList = [];
-
-  if (options?.includeDelete) {
-    changeList.push({
-      action: "delete",
-      key: encodeHex(key),
-    });
-  }
-
-  changeList.push({
-    action: "insert",
-    key: encodeHex(key),
-    value: options.encode ? encodeHex(value) : value,
-  });
-
-  return changeList;
-};
-
 module.exports = {
   encodeHex,
   decodeHex,
-  decodeDataLayerResponse,
-  keyValueToChangeList,
+  decodeDataLayerResponse
 };

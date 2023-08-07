@@ -2,6 +2,10 @@ const superagent = require("superagent");
 const wallet = require("./wallet");
 const https = require("https");
 
+const convertXchToMojos = (xch) => {
+  return Math.round(xch * 1000000000000);
+};
+
 const getFeeEstimate = async (config) => {
   try {
     const { cert, key } = wallet.getBaseOptions(config);

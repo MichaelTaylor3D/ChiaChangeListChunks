@@ -1,7 +1,12 @@
 const superagent = require("superagent");
 const https = require("https");
+const os = require("os");
+const path = require("path");
+const fs = require("fs");
+const { getChiaRoot } = require("./chia-root");
 
 const getBaseOptions = (config) => {
+  const chiaRoot = getChiaRoot();
   let cert, key;
 
   if (process.env.CHIA_CERT_BASE64 && process.env.CHIA_KEY_BASE64) {
