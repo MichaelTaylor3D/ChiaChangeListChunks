@@ -1,0 +1,22 @@
+{
+  "name": "chia-changelist-chunks",
+  "version": "1.0.0",
+  "description": "Auto chunks your Chia DataLayer changelist if it exceeds RPC size limitations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichaelTaylor3D/ChiaChangeListChunks.git"
+  },
+  "keywords": [
+    "chia-blockchain"
+  ],
+  "author": "Michael Taylor",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MichaelTaylor3D/ChiaChangeListChunks/issues"
+  },
+  "homepage": "https://github.com/MichaelTaylor3D/ChiaChangeListChunks#readme"
+}
