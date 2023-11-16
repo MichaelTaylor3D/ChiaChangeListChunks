@@ -1,3 +1,4 @@
+const { TextEncoder } = require("util");
 const { encodeHex, decodeHex } = require("./utils");
 const { callAndAwaitBlockchainRPC } = require("./chia/rpc");
 
@@ -24,7 +25,7 @@ async function chunkChangeList(storeId, changelist) {
   }));
 
   for (const item of changelist) {
-    const itemSize = item?.value?.length || JSON.stringify(item).length;
+    const itemSize = new TextEncoder().encode(JSON.stringify(item)).length;
 
     if (itemSize > config.maximum_rpc_payload_size) {
       result = result.concat(
@@ -60,6 +61,15 @@ async function getExistingKeys(storeId, config) {
   );
 }
 
+/**
+ * Handles an oversized item by breaking it into smaller chunks.
+ *
+ * @param {Object} item - The item to be chunked.
+ * @param {number} itemSize - The size of the item.
+ * @param {number} maxSize - The maximum size allowed for a chunk.
+ * @param {Object} existingKeys - Existing keys to check for duplicates.
+ * @returns {Array} An array of chunked items.
+ */
 async function handleOversizedItem(item, itemSize, maxSize, existingKeys) {
   console.log(`Chunking item ${decodeHex(item.key)}`);
   const decodedKey = decodeHex(item.key, "hex");
@@ -75,7 +85,16 @@ async function handleOversizedItem(item, itemSize, maxSize, existingKeys) {
 
   for (let i = 0; i < chunkCount; i++) {
     const start = i * maxSize;
-    const chunk = item.value.substring(start, start + maxSize);
+    let chunk = item.value.substring(start, start + maxSize);
+
+    // Adjust chunk size if necessary to account for key and metadata
+    while (
+      new TextEncoder().encode(
+        JSON.stringify({ key: encodedChunkKeys[i], value: chunk })
+      ).length > maxSize
+    ) {
+      chunk = chunk.substring(0, chunk.length - 1); // Reduce chunk size
+    }
 
     const changeList = [];
     if (isExistingKey(encodedChunkKeys[i], existingKeys)) {
@@ -113,6 +132,13 @@ async function handleOversizedItem(item, itemSize, maxSize, existingKeys) {
   return newChunks;
 }
 
+/**
+ * Checks if a key exists in the existing keys.
+ *
+ * @param {string} encodedKey - The key to check.
+ * @param {Object} existingKeys - The existing keys.
+ * @returns {boolean} True if the key exists, false otherwise.
+ */
 function isExistingKey(encodedKey, existingKeys) {
   return existingKeys?.keys?.includes(encodedKey);
 }
