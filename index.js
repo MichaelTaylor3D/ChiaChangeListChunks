@@ -31,7 +31,7 @@ async function chunkChangeList(storeId, changelist) {
         await handleOversizedItem(
           item,
           itemSize,
-          config.maximum_rpc_payload_size - 1024,
+          config.maximum_rpc_payload_size - 2048,
           existingKeys
         )
       );
