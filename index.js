@@ -1,4 +1,4 @@
-const { encodeHex, decodeHex } = require("./utils");
+const { encodeHex, decodeHex, getByteSize } = require("./utils");
 const { callAndAwaitBlockchainRPC } = require("./chia/rpc");
 
 let config = {
@@ -24,7 +24,7 @@ async function chunkChangeList(storeId, changelist) {
   }));
 
   for (const item of changelist) {
-    const itemSize = item?.value?.length || JSON.stringify(item).length;
+    const itemSize = getByteSize(JSON.stringify(item));
 
     if (itemSize > config.maximum_rpc_payload_size) {
       result = result.concat(

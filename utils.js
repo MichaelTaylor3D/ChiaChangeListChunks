@@ -13,8 +13,13 @@ const decodeDataLayerResponse = (data) => {
   }));
 };
 
+const getByteSize = (str) => {
+  return Buffer.from(str).length;
+}
+
 module.exports = {
   encodeHex,
   decodeHex,
-  decodeDataLayerResponse
+  decodeDataLayerResponse,
+  getByteSize,
 };
